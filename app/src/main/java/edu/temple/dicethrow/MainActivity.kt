@@ -12,15 +12,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(supportFragmentManager.findFragmentById(R.id.fragmentContainerView) == null){
+        if (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) == null) {
             supportFragmentManager.beginTransaction()
-                .add(R.id.fragmentContainerView, DieFragment.newInstance(20))
+                .add(R.id.fragmentContainerView, DieFragment.newInstance(6)) // first die
+                .commit()
+        }
+
+        if (supportFragmentManager.findFragmentById(R.id.fragmentContainerView2) == null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainerView2, DieFragment.newInstance(20)) // second die
                 .commit()
         }
 
         findViewById<Button>(R.id.rollDiceButton).setOnClickListener {
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView)?.run {
-                (this as DieFragment).throwDie()
+            listOf(R.id.fragmentContainerView, R.id.fragmentContainerView2).forEach { id ->
+                supportFragmentManager.findFragmentById(id)?.run {
+                    (this as DieFragment).throwDie()
+                }
             }
         }
     }
